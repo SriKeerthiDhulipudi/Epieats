@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile - EpiEats</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between">
+        <div class="flex space-x-7">
+          <div>
+            <a href="index.html" class="flex items-center py-4 px-2">
+              <span class="font-semibold text-gray-500 text-lg">EpiEats</span>
+            </a>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-3">
+          <a href="index.html" class="py-2 px-4 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition">Home</a>
+        </div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center space-x-3">
+  <a href="profile.html" class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Profile</a>
+  <a href="login.html" class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</a>
+  <a href="register.html" class="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</a>
+</div>
+
+
+</nav>
+
+
+  <!-- Profile Section -->
+  <div class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-md">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Your Profile</h1>
+    <div id="profileContent">
+      <!-- Populated by JS -->
+    </div>
+    <div class="mt-6 flex justify-between">
+      <a href="allergy.html" class="text-green-600 hover:underline">Edit Allergy Preferences</a>
+      <button onclick="logout()" class="text-red-500 hover:underline">Log Out</button>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      alert("You are not logged in!");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("profileContent").innerHTML = `
+        <p class="mb-4 text-gray-700"><strong>Name:</strong> ${user.name || 'N/A'}</p>
+        <p class="mb-4 text-gray-700"><strong>Email:</strong> ${user.email}</p>
+        <div class="mb-4">
+          <p class="text-gray-700 font-semibold mb-2">Allergies:</p>
+          ${
+            user.allergies && user.allergies.length > 0
+              ? user.allergies.map(a => `<span class="allergy-badge bg-green-100 text-green-800">${a}</span>`).join('')
+              : `<p class="text-gray-500">No allergies set.</p>`
+          }
+        </div>
+      `;
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <style>
+    .allergy-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</body>
+</html>

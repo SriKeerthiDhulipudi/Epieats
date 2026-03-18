@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Allergy Preferences | EpiEats</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white shadow-2xl rounded-xl w-full max-w-3xl p-10">
+      <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Select Your Allergies</h1>
+      <form id="allergy-form">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="dairy" class="accent-green-500"> Dairy
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="gluten" class="accent-green-500"> Gluten
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="peanuts" class="accent-green-500"> Peanuts
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="eggs" class="accent-green-500"> Eggs
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="soy" class="accent-green-500"> Soy
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="shellfish" class="accent-green-500"> Shellfish
+          </label>
+           <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="fish" class="accent-green-500"> fish
+          </label>
+           <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Sesame" class="accent-green-500"> Sesame
+          </label>
+           <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Wheat" class="accent-green-500"> Wheat
+          </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Sulfites" class="accent-green-500"> Sulfites
+          </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Lupin" class="accent-green-500"> Lupin
+          </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Corn" class="accent-green-500"> Corn
+          </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Citrus" class="accent-green-500"> Citrus
+          </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Chocolatet" class="accent-green-500"> Chocolate
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Beef" class="accent-green-500"> Beef
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Chicken" class="accent-green-500"> Chicken
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Yeast" class="accent-green-500"> Yeast
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Celery" class="accent-green-500"> Celery
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Garlic" class="accent-green-500"> Garlic
+          </label>
+          <label class="flex items-center gap-3 p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50 transition">
+            <input type="checkbox" name="allergies" value="Onion" class="accent-green-500"> Onion
+          </label>
+          </div>
+
+        <button type="submit" class="w-full py-3 px-6 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition">
+          Save Preferences
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+  document.getElementById("allergy-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const allergies = Array.from(document.querySelectorAll("input[name='allergies']:checked"))
+                           .map(cb => cb.value);
+
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (!user) {
+      alert("Please log in before saving preferences.");
+      return;
+    }
+
+    user.allergies = allergies;
+
+    // Update currentUser
+    localStorage.setItem("currentUser", JSON.stringify(user));
+
+    // Update the full users array
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const updatedUsers = users.map(u => u.email === user.email ? user : u);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    alert(`Successfully saved your allergies: ${allergies.join(", ")}`);
+    window.location.href = "index.html";
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Breakfast - EpiEats</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+    .allergy-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between">
+        <div class="flex space-x-7">
+          <div>
+            <a href="index.html" class="flex items-center py-4 px-2">
+              <span class="font-semibold text-gray-500 text-lg">EpiEats</span>
+            </a>
+          </div>
+          <div class="hidden md:flex items-center space-x-1">
+            <a
+              href="index.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Home</a
+            >
+            <a
+              href="breakfast.html"
+              class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold"
+              >Breakfast</a
+            >
+            <a
+              href="lunch.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Lunch</a
+            >
+            <a
+              href="dinner.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Dinner</a
+            >
+            <a
+              href="desserts.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Desserts</a
+            >
+          </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-3">
+          <a href="profile.html" class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Profile</a>
+          <a
+            href="login.html"
+            class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300"
+            >Log In</a
+          >
+          <a
+            href="register.html"
+            class="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
+            >Sign Up</a
+          >
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breakfast Recipes Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold mb-8">Breakfast Recipes</h1>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Your Allergy Profile</h2>
+      <div id="allergyProfile" class="flex flex-wrap gap-2 mb-6"></div>
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      id="breakfastRecipes"
+    ></div>
+  </div>
+
+  <script>
+    // Sample recipes data
+    const recipes = [
+      {
+        name: "Classic Oatmeal",
+        category: "breakfast",
+        image:
+          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+        ingredients: {
+          ingredient1: "Oats",
+          ingredient2: "Milk",
+          ingredient3: "Honey",
+        },
+        substitutions: {
+          Milk: "Almond Milk",
+        },
+        instructions:
+          "Cook oats with milk until soft. Add honey to taste and serve warm.",
+      },
+      {
+        name: "Fruit Yogurt Parfait",
+        category: "breakfast",
+        image:
+          "https://preppykitchen.com/wp-content/uploads/2024/03/Yogurt-Parfait-Feature.jpg",
+        ingredients: {
+          ingredient1: "Yogurt",
+          ingredient2: "Granola",
+          ingredient3: "Mixed Berries",
+        },
+        substitutions: {
+          Yogurt: "Coconut Yogurt",
+        },
+        instructions:
+          "Layer yogurt, granola, and berries in a glass. Serve chilled.",
+      },
+    ];
+
+   
+    // Load user allergy profile
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const allergyProfile = document.getElementById("allergyProfile");
+
+if (currentUser) {
+  if (currentUser.allergies && currentUser.allergies.length > 0) {
+    currentUser.allergies.forEach((allergy) => {
+      const badge = document.createElement("span");
+      badge.className =
+        "allergy-badge bg-green-100 text-green-800 px-3 py-1 rounded-full mr-2 mb-2 text-sm";
+      badge.textContent = allergy;
+      allergyProfile.appendChild(badge);
+    });
+  } else {
+    allergyProfile.innerHTML = `
+      <p class="text-gray-500">
+        No allergies selected.
+        <a href="profile.html" class="text-green-500 hover:underline">Update your profile</a>
+      </p>`;
+  }
+} else {
+  allergyProfile.innerHTML = `
+    <p class="text-gray-500">
+      No user signed in.
+      <a href="register.html" class="text-green-500 hover:underline">Set your allergies</a>
+    </p>`;
+}
+
+    // Filter breakfast recipes based on allergies
+    function filterRecipesByAllergies(allergies) {
+      return recipes.filter((recipe) => {
+        if (recipe.category !== "breakfast") return false;
+        // Check if any allergy matches any ingredient text (case-insensitive)
+        return !allergies.some((allergy) =>
+          Object.values(recipe.ingredients).some((ingredient) =>
+            ingredient.toLowerCase().includes(allergy.toLowerCase())
+          )
+        );
+      });
+    }
+
+    const breakfastRecipes = recipes.filter(
+      (recipe) => recipe.category === "breakfast"
+    );
+
+    const filteredRecipes =
+      currentUser?.allergies && currentUser.allergies.length > 0
+        ? filterRecipesByAllergies(currentUser.allergies)
+        : breakfastRecipes;
+
+    const recipesContainer = document.getElementById("breakfastRecipes");
+
+    if (filteredRecipes.length > 0) {
+      filteredRecipes.forEach((recipe) => {
+        const recipeCard = document.createElement("div");
+        recipeCard.className =
+          "recipe-card bg-white rounded-lg overflow-hidden shadow-md";
+        recipeCard.innerHTML = `
+                <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-48 object-cover" />
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold mb-2">${recipe.name}</h3>
+                  <div class="flex flex-wrap mb-4">
+                    ${Object.entries(recipe.substitutions)
+                      .map(
+                        ([original, substitute]) => `
+                          <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
+                            ${original} → ${substitute}
+                          </span>
+                        `
+                      )
+                      .join("")}
+                  </div>
+                  <button class="text-green-500 hover:underline" onclick="showRecipeDetails('${recipe.name}')">
+                    View Recipe
+                  </button>
+                </div>
+              `;
+        recipesContainer.appendChild(recipeCard);
+      });
+    } else {
+      recipesContainer.innerHTML = `
+            <div class="col-span-3 text-center py-12">
+              <p class="text-gray-500 mb-4">No breakfast recipes available for your allergy profile.</p>
+              <a href="register.html" class="text-green-500 hover:underline">Update your allergy preferences</a>
+            </div>
+          `;
+    }
+
+    // Show recipe details if logged in
+    function showRecipeDetails(recipeName) {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        alert("Please log in to view recipes.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const recipe = recipes.find((r) => r.name === recipeName);
+      if (!recipe) {
+        alert("Recipe not found.");
+        return;
+      }
+
+      const ingredients = Object.values(recipe.ingredients)
+        .map((ing, index) => `${index + 1}. ${ing}`)
+        .join("\n");
+
+      alert(
+        `Recipe: ${recipe.name}\n\nIngredients:\n${ingredients}\n\nInstructions:\n${recipe.instructions}`
+      );
+    }
+  </script>
+</body>
+</html>

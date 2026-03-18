@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Desserts - EpiEats</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+    .allergy-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between">
+        <div class="flex space-x-7">
+          <div>
+            <a href="index.html" class="flex items-center py-4 px-2">
+              <span class="font-semibold text-gray-500 text-lg">EpiEats</span>
+            </a>
+          </div>
+          <div class="hidden md:flex items-center space-x-1">
+            <a
+              href="index.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Home</a
+            >
+            <a
+              href="breakfast.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Breakfast</a
+            >
+            <a
+              href="lunch.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Lunch</a
+            >
+            <a
+              href="dinner.html"
+              class="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300"
+              >Dinner</a
+            >
+            <a
+              href="desserts.html"
+              class="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold"
+              >Desserts</a
+            >
+          </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-3">
+          <a href="profile.html" class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Profile</a>
+          <a
+            href="login.html"
+            class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300"
+            >Log In</a
+          >
+          <a
+            href="register.html"
+            class="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300"
+            >Sign Up</a
+          >
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dessert Recipes Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold mb-8">Dessert Recipes</h1>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4">Your Allergy Profile</h2>
+      <div id="allergyProfile" class="flex flex-wrap gap-2 mb-6"></div>
+     
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      id="dessertRecipes"
+    ></div>
+  </div>
+
+  <script>
+    // Sample dessert recipes data
+    const recipes = [
+      {
+        name: "Chocolate Avocado Mousse",
+        category: "dessert",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf39b6dsHSTbES2JLj_G1n08VqC5MbOCD5yA&s",
+        ingredients: {
+          ingredient1: "Avocado",
+          ingredient2: "Cocoa Powder",
+          ingredient3: "Maple Syrup",
+        },
+        substitutions: {
+          "Maple Syrup": "Honey",
+        },
+        instructions:
+          "Blend avocado, cocoa powder, and maple syrup until smooth. Chill and serve.",
+      },
+      {
+        name: "Fruit Salad",
+        category: "dessert",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKIODrNpeDFYVbSARhHR3tgDJlUBl_62HUGQ&s",
+        ingredients: {
+          ingredient1: "Strawberries",
+          ingredient2: "Blueberries",
+          ingredient3: "Kiwi",
+        },
+        substitutions: {},
+        instructions:
+          "Chop fruits and mix. Serve chilled.",
+      },
+      {
+        name: "Banana Oat Cookies",
+        category: "dessert",
+        image:
+          "data:image/jpeg;base64,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",
+        ingredients: {
+          ingredient1: "Bananas",
+          ingredient2: "Oats",
+          ingredient3: "Chocolate Chips",
+        },
+        substitutions: {
+          "Chocolate Chips": "Carob Chips",
+        },
+        instructions:
+          "Mix mashed bananas with oats and chocolate chips. Bake until golden.",
+      },
+    ];
+
+   // Load user allergy profile
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const allergyProfile = document.getElementById("allergyProfile");
+
+if (currentUser) {
+  if (currentUser.allergies && currentUser.allergies.length > 0) {
+    currentUser.allergies.forEach((allergy) => {
+      const badge = document.createElement("span");
+      badge.className =
+        "allergy-badge bg-green-100 text-green-800 px-3 py-1 rounded-full mr-2 mb-2 text-sm";
+      badge.textContent = allergy;
+      allergyProfile.appendChild(badge);
+    });
+  } else {
+    allergyProfile.innerHTML = `
+      <p class="text-gray-500">
+        No allergies selected.
+        <a href="profile.html" class="text-green-500 hover:underline">Update your profile</a>
+      </p>`;
+  }
+} else {
+  allergyProfile.innerHTML = `
+    <p class="text-gray-500">
+      No user signed in.
+      <a href="register.html" class="text-green-500 hover:underline">Set your allergies</a>
+    </p>`;
+}
+
+
+    // Filter dessert recipes based on allergies
+    function filterRecipesByAllergies(allergies) {
+      return recipes.filter((recipe) => {
+        if (recipe.category !== "dessert") return false;
+        return !allergies.some((allergy) =>
+          Object.values(recipe.ingredients).some((ingredient) =>
+            ingredient.toLowerCase().includes(allergy.toLowerCase())
+          )
+        );
+      });
+    }
+
+    const dessertRecipes = recipes.filter(
+      (recipe) => recipe.category === "dessert"
+    );
+
+    const filteredRecipes =
+      currentUser?.allergies && currentUser.allergies.length > 0
+        ? filterRecipesByAllergies(currentUser.allergies)
+        : dessertRecipes;
+
+    const recipesContainer = document.getElementById("dessertRecipes");
+
+    if (filteredRecipes.length > 0) {
+      filteredRecipes.forEach((recipe) => {
+        const recipeCard = document.createElement("div");
+        recipeCard.className =
+          "recipe-card bg-white rounded-lg overflow-hidden shadow-md";
+        recipeCard.innerHTML = `
+                <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-48 object-cover" />
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold mb-2">${recipe.name}</h3>
+                  <div class="flex flex-wrap mb-4">
+                    ${Object.entries(recipe.substitutions)
+                      .map(
+                        ([original, substitute]) => `
+                          <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded mr-2 mb-2">
+                            ${original} → ${substitute}
+                          </span>
+                        `
+                      )
+                      .join("")}
+                  </div>
+                  <button class="text-green-500 hover:underline" onclick="showRecipeDetails('${recipe.name}')">
+                    View Recipe
+                  </button>
+                </div>
+              `;
+        recipesContainer.appendChild(recipeCard);
+      });
+    } else {
+      recipesContainer.innerHTML = `
+            <div class="col-span-3 text-center py-12">
+              <p class="text-gray-500 mb-4">No dessert recipes available for your allergy profile.</p>
+              <a href="register.html" class="text-green-500 hover:underline">Update your allergy preferences</a>
+            </div>
+          `;
+    }
+
+    // Show recipe details if logged in
+    function showRecipeDetails(recipeName) {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser) {
+        alert("Please log in to view recipes.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const recipe = recipes.find((r) => r.name === recipeName);
+      if (!recipe) {
+        alert("Recipe not found.");
+        return;
+      }
+
+      const ingredients = Object.values(recipe.ingredients)
+        .map((ing, index) => `${index + 1}. ${ing}`)
+        .join("\n");
+      alert(
+        `${recipe.name}\n\nIngredients:\n${ingredients}\n\nInstructions:\n${recipe.instructions}`
+      );
+    }
+  </script>
+</body>
+</html>
